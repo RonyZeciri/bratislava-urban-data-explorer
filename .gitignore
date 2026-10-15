@@ -34,3 +34,8 @@ secrets/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Local-only GIS snapshots: redistribution terms are not yet confirmed
+/backend/data/*.geojson
+/backend/data/*.manifest.json
+/backend/data/.*.tmp

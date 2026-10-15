@@ -1,7 +1,9 @@
 :root {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #1e3028;
-  background: #f7f8f2;
+  background: #f5f7f3;
+  --muted: #59675f;
+  --border: #dce3d9;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

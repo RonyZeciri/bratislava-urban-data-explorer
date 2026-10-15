@@ -1,0 +1,1 @@
+"""Ručne spúšťané nástroje projektu."""
