@@ -1,0 +1,36 @@
+# Python and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Node.js and build output
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+
+# Secrets and local configuration (examples may be committed)
+.env
+.env.*
+!.env.example
+!.env.*.example
+secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Local logs and editor / OS files
+*.log
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

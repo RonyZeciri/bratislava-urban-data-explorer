@@ -1,0 +1,3 @@
+# Priame závislosti. Presné nainštalované verzie sú v requirements.txt.
+fastapi
+uvicorn
