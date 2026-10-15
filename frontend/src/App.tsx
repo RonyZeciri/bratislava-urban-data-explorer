@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { AnalyticsPanel } from './components/AnalyticsPanel'
+import { analyzeBrownfields, DEFAULT_FILTERS } from './domain/brownfieldAnalytics'
+import type { BrownfieldFilters } from './domain/brownfieldAnalytics'
 import { BackendStatus } from './components/BackendStatus'
 import { BrownfieldsLayer } from './components/BrownfieldsLayer'
 import type { FocusRequest } from './components/BrownfieldsLayer'
@@ -8,12 +11,24 @@ import { CityMap } from './components/CityMap'
 import './App.css'
 
 function App() {
-  const state = useBrownfields()
+  const { state, retry } = useBrownfields()
+  const [filters, setFilters] = useState<BrownfieldFilters>({ ...DEFAULT_FILTERS })
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const [focusRequest, setFocusRequest] = useState<FocusRequest | null>(null)
-  const selected = state.status === 'ready'
-    ? state.data.features.find((feature) => feature.properties.OBJECTID === selectedId) ?? null
-    : null
+  const analysis = useMemo(() => analyzeBrownfields(
+    state.status === 'ready' ? state.data.features : [], filters,
+  ), [state, filters])
+  const visibleData = useMemo(() => ({ type: 'FeatureCollection' as const, features: analysis.features }), [analysis])
+  // React Leaflet nemení GeoJSON dáta za behu. Obnovujeme iba vrstvu, nie mapu.
+  const layerKey = `${state.status === 'ready' ? state.acquiredAt ?? 'local' : ''}:${analysis.features.map((feature) => feature.properties.OBJECTID).sort((a, b) => a - b).join(',')}`
+  const selected = analysis.features.find((feature) => feature.properties.OBJECTID === selectedId) ?? null
+
+  function changeFilters(next: BrownfieldFilters) {
+    const result = analyzeBrownfields(state.status === 'ready' ? state.data.features : [], next)
+    setFilters(next)
+    setFocusRequest(null)
+    setSelectedId((id) => result.features.some((feature) => feature.properties.OBJECTID === id) ? id : null)
+  }
 
   return (
     <main className="page">
@@ -40,14 +55,18 @@ function App() {
         </p>
       </section>
 
+      <AnalyticsPanel filters={filters} analysis={analysis} ready={state.status === 'ready'} onChange={changeFilters} />
+
       <div className="explorer-layout">
         <CityMap>
           {state.status === 'ready' && (
-            <BrownfieldsLayer data={state.data} selectedId={selectedId}
+            <BrownfieldsLayer key={layerKey} data={visibleData} selectedId={selected?.properties.OBJECTID ?? null}
               onSelect={setSelectedId} focusRequest={focusRequest} />
           )}
         </CityMap>
-        <BrownfieldPanel state={state} selected={selected} onSelect={setSelectedId}
+        <BrownfieldPanel state={state} results={analysis.features} filtersValid={analysis.valid}
+          onRetry={() => { setSelectedId(null); setFocusRequest(null); retry() }}
+          selected={selected} onSelect={setSelectedId}
           onZoom={() => {
             if (selected) setFocusRequest({ feature: selected, sequence: (focusRequest?.sequence ?? 0) + 1 })
           }} />

@@ -22,6 +22,7 @@ build/
 .env.*
 !.env.example
 !.env.*.example
+# Priklady su dokumentacia; skutocne .env.local a .env.production.local zostavaju ignorovane.
 secrets/
 *.pem
 *.key

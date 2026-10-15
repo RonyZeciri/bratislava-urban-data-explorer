@@ -1,10 +1,13 @@
+import { config } from '../config'
+import { apiUrl } from '../config/parseConfig'
+
 export type HealthResponse = {
   status: 'ok'
 }
 
-/** Relatívnu adresu /api počas vývoja presmeruje Vite na FastAPI. */
+/** Prázdny API base počas lokálneho vývoja zachová tok cez Vite proxy. */
 export async function getHealth(signal: AbortSignal): Promise<HealthResponse> {
-  const response = await fetch('/api/health', { signal })
+  const response = await fetch(apiUrl(config, '/api/health'), { signal })
 
   if (!response.ok) {
     throw new Error(`Kontrola backendu zlyhala: HTTP ${response.status}`)

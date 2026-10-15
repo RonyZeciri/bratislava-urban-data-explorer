@@ -1,0 +1,47 @@
+{
+  "source_url": "https://services8.arcgis.com/pRlN1m0su5BYaFAS/arcgis/rest/services/BF_aktualiz%C3%A1cia_2022_WFL1/FeatureServer/8",
+  "layer_name": "Brownfieldy nad 0,5 ha",
+  "layer_id": 8,
+  "downloaded_at": "2026-10-15T11:11:06.564161+00:00",
+  "edition": "2022",
+  "feature_count": 113,
+  "source_count": 113,
+  "research_reference_count": 113,
+  "difference_from_research": 0,
+  "source_spatial_reference": {
+    "wkid": 102100,
+    "latestWkid": 3857
+  },
+  "output_crs": "OGC:CRS84 (WGS 84, longitude/latitude)",
+  "editing_info": {
+    "lastEditDate": 1679307560864,
+    "schemaLastEditDate": 1679307560864,
+    "dataLastEditDate": 1679307560864
+  },
+  "fields": [
+    "OBJECTID",
+    "SPEC_CISLO",
+    "NAZOV",
+    "ADRESA",
+    "MC",
+    "VYMERA_HA",
+    "PR_VYU_POP",
+    "N_FUNK_POP",
+    "ZAMER",
+    "DRUH_VLA",
+    "NKP_NAZOV",
+    "SEZ_POPIS",
+    "ZONA_OZNACENIE"
+  ],
+  "count_url": "https://services8.arcgis.com/pRlN1m0su5BYaFAS/arcgis/rest/services/BF_aktualiz%C3%A1cia_2022_WFL1/FeatureServer/8/query?where=1%3D1&returnCountOnly=true&f=json",
+  "ids_url": "https://services8.arcgis.com/pRlN1m0su5BYaFAS/arcgis/rest/services/BF_aktualiz%C3%A1cia_2022_WFL1/FeatureServer/8/query?where=1%3D1&returnIdsOnly=true&f=json",
+  "query_urls": [
+    "https://services8.arcgis.com/pRlN1m0su5BYaFAS/arcgis/rest/services/BF_aktualiz%C3%A1cia_2022_WFL1/FeatureServer/8/query?objectIds=1%2C3%2C4%2C6%2C7%2C9%2C12%2C15%2C16%2C18%2C20%2C22%2C23%2C24%2C26%2C27%2C28%2C29%2C30%2C31%2C32%2C33%2C36%2C37%2C39%2C40%2C41%2C42%2C44%2C45%2C46%2C47%2C50%2C51%2C52%2C53%2C54%2C57%2C58%2C60%2C61%2C63%2C64%2C65%2C66%2C67%2C68%2C70%2C71%2C72%2C73%2C74%2C79%2C80%2C81%2C82%2C83%2C84%2C85%2C86%2C87%2C89%2C90%2C92%2C93%2C94%2C95%2C96%2C98%2C99%2C100%2C101%2C104%2C107%2C108%2C110%2C111%2C112%2C114%2C116%2C117%2C118%2C119%2C120%2C121%2C122%2C123%2C125%2C126%2C127%2C130%2C131%2C132%2C133%2C134%2C135%2C136%2C137%2C138%2C139%2C140%2C141%2C142%2C143%2C144%2C145%2C146%2C147%2C148%2C149%2C150%2C151%2C152&outFields=OBJECTID%2CSPEC_CISLO%2CNAZOV%2CADRESA%2CMC%2CVYMERA_HA%2CPR_VYU_POP%2CN_FUNK_POP%2CZAMER%2CDRUH_VLA%2CNKP_NAZOV%2CSEZ_POPIS%2CZONA_OZNACENIE&returnGeometry=true&outSR=4326&f=geojson"
+  ],
+  "redistribution": "unconfirmed; local use only; do not commit or publish",
+  "service_license_info": "",
+  "service_item_url": "https://www.arcgis.com/sharing/rest/content/items/7b4eaa49abcf4e32b0a4162eaa3004e1",
+  "sha256": "83832ba6609522db267d7758c12bff4ae5d74ca8d6272fc7c0a8005c659b732f",
+  "previous_feature_count": 113,
+  "difference_from_previous": 0
+}

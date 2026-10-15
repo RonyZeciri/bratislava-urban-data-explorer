@@ -11,6 +11,7 @@ from urllib.error import HTTPError
 from urllib.parse import parse_qs, urlparse
 
 from app import main
+from app.config import read_settings
 from app.brownfields import (
     DataValidationError, MANIFEST_NAME, SNAPSHOT_NAME, SOURCE_URL,
     SnapshotStore, parse_json, validate_collection,
@@ -108,6 +109,10 @@ class ValidationTests(unittest.TestCase):
 
 class SnapshotTests(unittest.TestCase):
     def setUp(self):
+        # Test lokálneho API nesmie závisieť od APP_ENV rodičovského PowerShellu.
+        app_patch = patch.object(main, 'app', main.create_app(read_settings({})))
+        app_patch.start()
+        self.addCleanup(app_patch.stop)
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.directory = Path(self.temporary.name)

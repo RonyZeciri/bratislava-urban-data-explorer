@@ -1,25 +1,33 @@
 import { useEffect, useState } from 'react'
-import { getBrownfields } from '../api/brownfields'
-import type { BrownfieldsCollection } from '../api/brownfields'
+import { getBrownfieldsResult } from '../api/brownfields'
+import type { BrownfieldsResult } from '../api/brownfields'
+import { ArcgisError } from '../api/arcgis'
+import { config } from '../config'
+import { gisAvailability } from '../domain/gisMode'
 
 export type BrownfieldsState =
   | { status: 'loading' }
-  | { status: 'error'; message: string }
-  | { status: 'ready'; data: BrownfieldsCollection }
+  | { status: 'error'; message: string; retryAt?: number }
+  | { status: 'disabled'; message: string }
+  | ({ status: 'ready' } & BrownfieldsResult)
 
-export function useBrownfields(): BrownfieldsState {
-  const [state, setState] = useState<BrownfieldsState>({ status: 'loading' })
+export function useBrownfields() {
+  const [attempt, setAttempt] = useState(0)
+  const [state, setState] = useState<BrownfieldsState>(() => gisAvailability(config.gisSource) ?? { status: 'loading' })
 
   useEffect(() => {
+    if (gisAvailability(config.gisSource)) return
     let active = true
     const controller = new AbortController()
-    const timeout = window.setTimeout(() => controller.abort(), 15000)
-    void getBrownfields(controller.signal).then(
-      (data) => { if (active) setState({ status: 'ready', data }) },
+    // ArcGIS má vlastný celkový/per-request limit; cleanup stále ruší odber.
+    const timeout = config.gisSource === 'local-api' ? window.setTimeout(() => controller.abort(), 15000) : undefined
+    void getBrownfieldsResult(controller.signal).then(
+      (result) => { if (active) setState({ status: 'ready', ...result }) },
       (error: unknown) => {
         if (active) setState({
           status: 'error',
-          message: controller.signal.aborted ? 'Načítanie údajov prekročilo časový limit.' :
+          retryAt: error instanceof ArcgisError ? error.retryAt : undefined,
+          message: controller.signal.aborted || (error instanceof Error && error.name === 'TimeoutError') ? 'Načítanie údajov prekročilo časový limit.' :
             error instanceof Error ? error.message : 'Údaje sa nepodarilo načítať.',
         })
       },
@@ -29,7 +37,12 @@ export function useBrownfields(): BrownfieldsState {
       controller.abort()
       window.clearTimeout(timeout)
     }
-  }, [])
+  }, [attempt])
 
-  return state
+  return { state, retry: () => {
+    if (state.status === 'error' && (!state.retryAt || Date.now() >= state.retryAt)) {
+      setState({ status: 'loading' })
+      setAttempt((value) => value + 1)
+    }
+  } }
 }
