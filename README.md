@@ -1,6 +1,6 @@
 # Bratislava Urban Data Explorer
 
-Vzdelávací a portfóliový projekt zameraný na mestské dáta Bratislavy.
+Portfóliový projekt zameraný na mestské dáta Bratislavy.
 Cieľom je postupne vytvoriť interaktívnu aplikáciu o brownfieldoch a vedieť
 vysvetliť celý tok od zdrojových dát cez API až po používateľské rozhranie.
 Nie je to oficiálna aplikácia Metropolitného inštitútu Bratislavy.
